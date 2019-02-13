@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">OTTApp</string>
+    <string name="empty_results">No results yet.</string>
+    <string name="loading">Loading ... \\n Please wait.</string>
+    <string name="count_template">%1$d варианта перелета</string>
+    <string name="price_template">от %1$d руб.</string>
 </resources>
