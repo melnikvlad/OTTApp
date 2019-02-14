@@ -1,4 +1,4 @@
-package com.example.ottapp.data;
+package com.example.ottapp.data.source.remote.model;
 
 import com.example.ottapp.data.beans.Flight;
 

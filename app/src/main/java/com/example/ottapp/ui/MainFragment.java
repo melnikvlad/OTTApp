@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ottapp.R;
-import com.example.ottapp.data.beans.HotelUI;
+import com.example.ottapp.data.source.local.db.UITripEntity;
 
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class MainFragment extends Fragment implements MainContract.View {
     }
 
     @Override
-    public void renderDataState(List<HotelUI> list) {
+    public void renderDataState(List<UITripEntity> list) {
         showProgress(false);
         showStatusText(false);
         showRefreshProgress(false);

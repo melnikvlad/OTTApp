@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.ottapp.R;
 import com.example.ottapp.data.beans.HotelUI;
+import com.example.ottapp.data.source.local.db.UITripEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private final Context mContext;
     private final OnHotelClickListener mCallback;
-    private List<HotelUI> mList = new ArrayList<>();
+    private List<UITripEntity> mList = new ArrayList<>();
 
     public TripAdapter(Context context, OnHotelClickListener callback) {
         mContext = context;
@@ -45,7 +46,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         return mList.size();
     }
 
-    public void add(final List<HotelUI> list) {
+    public void add(final List<UITripEntity> list) {
         mList.addAll(list);
         notifyDataSetChanged();
     }
@@ -65,17 +66,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         }
 
         void bind(int pos) {
-            HotelUI item = mList.get(pos);
+            UITripEntity item = mList.get(pos);
 
             if (item != null) {
-                textName.setText(item.getName());
-                textFlightsCount.setText(String.format(mContext.getString(R.string.count_template), item.getFlightsIds().size()));
+                textName.setText(item.getHotelName());
+                textFlightsCount.setText(String.format(mContext.getString(R.string.count_template), item.getFlights().size()));
                 textPrice.setText(String.format(mContext.getString(R.string.price_template), item.getTotalMinPrice()));
             }
         }
     }
 
     public interface OnHotelClickListener {
-        void onItemClick(int pos, HotelUI item);
+        void onItemClick(int pos, UITripEntity item);
     }
 }

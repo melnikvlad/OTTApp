@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.ottapp.R;
+import com.example.ottapp.data.source.MainRepository;
+import com.example.ottapp.data.source.remote.RemoteDataSource;
 import com.example.ottapp.utils.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +23,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityUtils.addFragment(getSupportFragmentManager(), mainFragment, R.id.frameContainer);
         }
 
-        new MainPresenter(mainFragment);
+        new MainPresenter(mainFragment, MainRepository.getInstance());
     }
 }

@@ -1,26 +1,34 @@
 package com.example.ottapp.data.beans;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.example.ottapp.data.source.local.db.DataConverter;
+import com.example.ottapp.utils.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class HotelUI {
     private int id;
     private String name;
     private int price;
     private List<Integer> flightsIds = null;
-    private List<Flight> flights = null;
+    private List<Flight> flights = new ArrayList<>();
     private Integer totalMinPrice = -1;
 
     public HotelUI() {
-        flights = new ArrayList<>();
+
     }
 
-    public HotelUI(int id, String name, int price, List<Integer> flightsIds, List<Flight> flights, Integer totalMinPrice) {
+    public HotelUI(int id, String name, int price, List<Integer> flightsIds, Integer totalMinPrice) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.flightsIds = flightsIds;
-        this.flights = new ArrayList<>();
         this.totalMinPrice = totalMinPrice;
     }
 
@@ -64,22 +72,14 @@ public class HotelUI {
         this.totalMinPrice = totalMinPrice;
     }
 
+
+
+
     public List<Flight> getFlights() {
         return flights;
     }
 
     public void setFlights(List<Flight> flights) {
         this.flights = flights;
-    }
-
-    @Override
-    public String toString() {
-        return "HotelUI{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", flightsIds=" + flightsIds +
-                ", totalMinPrice=" + totalMinPrice +
-                '}';
     }
 }

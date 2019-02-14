@@ -1,12 +1,10 @@
 package com.example.ottapp;
 
-import com.example.ottapp.data.CompanyList;
-import com.example.ottapp.data.FlightList;
-import com.example.ottapp.data.HotelList;
+import com.example.ottapp.data.source.remote.model.CompanyList;
+import com.example.ottapp.data.source.remote.model.FlightList;
+import com.example.ottapp.data.source.remote.model.HotelList;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import retrofit2.http.GET;
 
 public interface Api {

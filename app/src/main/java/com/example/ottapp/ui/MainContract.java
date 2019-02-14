@@ -3,6 +3,7 @@ package com.example.ottapp.ui;
 import com.example.ottapp.BasePresenter;
 import com.example.ottapp.BaseView;
 import com.example.ottapp.data.beans.HotelUI;
+import com.example.ottapp.data.source.local.db.UITripEntity;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ interface MainContract {
 
         void renderRefreshingState();
 
-        void renderDataState(List<HotelUI> list);
+        void renderDataState(List<UITripEntity> list);
     }
 
     interface Presenter extends BasePresenter {
@@ -24,11 +25,13 @@ interface MainContract {
 
         void load();
 
+        void readCache();
+
         void save();
 
         void clearCache();
 
-        void click(int pos, HotelUI item);
+        void click(int pos, UITripEntity item);
 
     }
 }
