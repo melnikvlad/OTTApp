@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">OTTApp</string>
-    <string name="empty_results">No results yet.</string>
-    <string name="loading">Loading ... \\n Please wait.</string>
+    <string name="empty_results">Результатов нет</string>
+    <string name="loading">Загрузка ... \n Пожалуйста подождите.</string>
     <string name="count_template">%1$d варианта перелета</string>
+    <string name="hotel_template">Отель \"%1$s\"</string>
     <string name="price_template">от %1$d руб.</string>
+    <string name="price_template_short">%1$dр</string>
+    <string name="apply">Применить</string>
 </resources>

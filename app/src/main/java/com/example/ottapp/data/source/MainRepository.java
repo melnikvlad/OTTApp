@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -44,7 +43,7 @@ public class MainRepository implements IMainRepository {
     public Single<List<UITripEntity>> getLocalData() {
         return Single.create(emitter -> {
             List<UITripEntity> data = mLocalDataSource.getAll();
-            if (data != null && data.size() > 0) {
+            if (data != null && !data.isEmpty()) {
                 emitter.onSuccess(data);
             } else {
                 emitter.onError(new Throwable("Cache is empty"));
@@ -75,7 +74,7 @@ public class MainRepository implements IMainRepository {
 
                         entity.setTotalMinPrice(h.getPrice() + minPrice);
                         entity.setCompanies(companiesMap);
-                        
+
                         mLocalDataSource.write(entity);
                     }
 
@@ -84,21 +83,21 @@ public class MainRepository implements IMainRepository {
     }
 
     @Override
-    public Single<UITripEntity> getEntity(UITripEntity item) {
-        return Single.create(emitter -> {
-            UITripEntity entity = mLocalDataSource.get(item.getHotelId());
-            if (entity != null) {
-                emitter.onSuccess(entity);
-                // TODO: return new map <companyName, sumPrice>
-            } else {
-                emitter.onError(new Throwable("No such item in cache"));
-            }
-        });
+    public Single<Integer> clearCache() {
+        return Single.fromCallable(mLocalDataSource::clear);
     }
 
     @Override
-    public Observable<Integer> clearCache() {
-        return Observable.just(mLocalDataSource.clear());
+    public Flowable<List<PopUpItem>> preparePopupData(UITripEntity entity) {
+        Map<Integer, String> companies = entity.getCompanies();
+        int hotelPrice = entity.getHotelPrice();
+
+        return Flowable.just(entity)
+                .map(UITripEntity::getFlights)
+                .flatMapIterable(source -> source)
+                .map(flight -> new PopUpItem(companies.get(flight.getCompanyId()), hotelPrice + flight.getPrice()))
+                .toSortedList()
+                .toFlowable();
     }
 
     private Flowable<List<HotelUI>> getHotelsObservable() {

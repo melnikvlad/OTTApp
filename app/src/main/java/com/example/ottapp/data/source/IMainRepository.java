@@ -5,7 +5,6 @@ import com.example.ottapp.data.source.local.db.UITripEntity;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public interface IMainRepository {
@@ -14,7 +13,8 @@ public interface IMainRepository {
 
     Single<List<UITripEntity>> getLocalData();
 
-    Single<UITripEntity> getEntity(UITripEntity item);
+    Single<Integer> clearCache();
 
-    Observable<Integer> clearCache();
+    Flowable<List<PopUpItem>> preparePopupData(UITripEntity item);
+
 }

@@ -1,6 +1,7 @@
 package com.example.ottapp.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,12 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ottapp.R;
+import com.example.ottapp.data.source.PopUpItem;
 import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.ui.adapter.PopUpAdapter;
+import com.example.ottapp.ui.adapter.TripAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -76,7 +82,7 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     @SuppressLint("RestrictedApi")
     @Override
-    public void setPresenter(MainContract.Presenter presenter) {
+    public void setPresenter(final MainContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
@@ -89,6 +95,8 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     @Override
     public void renderLoadingState() {
+        showList(false);
+        showRefreshProgress(false);
         showProgress(true);
         showStatusText(true);
         setStatusText(R.string.loading);
@@ -96,17 +104,35 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     @Override
     public void renderRefreshingState() {
-        showRefreshProgress(false);
+        showList(false);
+        showRefreshProgress(true);
         showProgress(false);
         showStatusText(false);
     }
 
     @Override
-    public void renderDataState(List<UITripEntity> list) {
+    public void renderDataState(final List<UITripEntity> list) {
+        showList(true);
         showProgress(false);
         showStatusText(false);
         showRefreshProgress(false);
-        mAdapter.add(list);
+        mAdapter.refresh(list);
+    }
+
+    @Override
+    public void renderPopUpState(final ArrayList<PopUpItem> popUpList) {
+        if (getActivity() != null) {
+            final Dialog dialog = new Dialog(getActivity());
+            final ListView listView = dialog.findViewById(R.id.listView);
+            final TextView textApply = dialog.findViewById(R.id.text_apply);
+
+            dialog.setCancelable(true);
+            dialog.setContentView(R.layout.layout_popup);
+            textApply.setOnClickListener(v -> dialog.dismiss());
+            PopUpAdapter popupAdapter = new PopUpAdapter(getActivity(), popUpList);
+            listView.setAdapter(popupAdapter);
+            dialog.show();
+        }
     }
 
     private void init() {
@@ -128,5 +154,9 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     private void showStatusText(boolean show) {
         textStatus.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showList(boolean show) {
+        recyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

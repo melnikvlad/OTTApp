@@ -1,12 +1,12 @@
 package com.example.ottapp.ui;
 
-import com.example.ottapp.data.beans.HotelUI;
 import com.example.ottapp.data.source.IMainRepository;
 import com.example.ottapp.data.source.local.db.UITripEntity;
 
+import java.util.ArrayList;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainPresenter implements MainContract.Presenter {
@@ -65,18 +65,17 @@ public class MainPresenter implements MainContract.Presenter {
     public void refresh() {
         mView.renderRefreshingState();
         clearCache();
-        load();
     }
 
     @Override
     public void click(int pos, UITripEntity item) {
         mCompositeDisposable.add(
-                mRepository.getEntity(item)
+                mRepository.preparePopupData(item)
+                        .filter(list -> list != null && !list.isEmpty())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                data -> {},
-                                throwable -> {}
+                                popUpList -> mView.renderPopUpState(new ArrayList<>(popUpList))
                         )
         );
     }
@@ -85,8 +84,14 @@ public class MainPresenter implements MainContract.Presenter {
     public void clearCache() {
         mCompositeDisposable.add(
                 mRepository.clearCache()
-                .subscribeOn(Schedulers.newThread())
-                .subscribe()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                code -> {
+                                    mView.renderLoadingState();
+                                    load();
+                                }
+                        )
         );
     }
 }
