@@ -69,7 +69,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             UITripEntity item = mList.get(pos);
 
             if (item != null) {
-                textName.setText(item.getHotelName());
+                textName.setText(String.format(mContext.getString(R.string.hotel_template), item.getHotelName()));
                 textFlightsCount.setText(String.format(mContext.getString(R.string.count_template), item.getFlights().size()));
                 textPrice.setText(String.format(mContext.getString(R.string.price_template), item.getTotalMinPrice()));
             }

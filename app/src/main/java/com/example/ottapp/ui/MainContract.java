@@ -27,8 +27,6 @@ interface MainContract {
 
         void readCache();
 
-        void save();
-
         void clearCache();
 
         void click(int pos, UITripEntity item);

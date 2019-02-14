@@ -64,6 +64,8 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void refresh() {
         mView.renderRefreshingState();
+        clearCache();
+        load();
     }
 
     @Override
@@ -77,11 +79,6 @@ public class MainPresenter implements MainContract.Presenter {
                                 throwable -> {}
                         )
         );
-    }
-
-    @Override
-    public void save() {
-
     }
 
     @Override

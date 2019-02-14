@@ -31,7 +31,7 @@ public class LocalDataSource implements ILocalDataSource {
     }
 
     @Override
-    public Boolean clear() {
+    public Integer clear() {
         return sDB.getDao().clear();
     }
 }

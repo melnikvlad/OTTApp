@@ -11,6 +11,6 @@ public interface ILocalDataSource {
 
     UITripEntity get(int hotelId);
 
-    Boolean clear();
+    Integer clear();
 
 }

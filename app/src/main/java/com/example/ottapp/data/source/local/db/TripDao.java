@@ -25,5 +25,5 @@ public interface TripDao {
     UITripEntity get(int id);
 
     @Query("DELETE FROM " + Constants.TABLE_NAME)
-    boolean clear();
+    int clear();
 }

@@ -74,6 +74,8 @@ public class MainRepository implements IMainRepository {
                         }
 
                         entity.setTotalMinPrice(h.getPrice() + minPrice);
+                        entity.setCompanies(companiesMap);
+                        
                         mLocalDataSource.write(entity);
                     }
 
@@ -87,6 +89,7 @@ public class MainRepository implements IMainRepository {
             UITripEntity entity = mLocalDataSource.get(item.getHotelId());
             if (entity != null) {
                 emitter.onSuccess(entity);
+                // TODO: return new map <companyName, sumPrice>
             } else {
                 emitter.onError(new Throwable("No such item in cache"));
             }
@@ -94,7 +97,7 @@ public class MainRepository implements IMainRepository {
     }
 
     @Override
-    public Observable<Boolean> clearCache() {
+    public Observable<Integer> clearCache() {
         return Observable.just(mLocalDataSource.clear());
     }
 

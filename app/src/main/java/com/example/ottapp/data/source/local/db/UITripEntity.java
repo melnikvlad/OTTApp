@@ -6,10 +6,13 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import com.example.ottapp.data.beans.Flight;
+import com.example.ottapp.data.source.MainRepository;
 import com.example.ottapp.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity(tableName = Constants.TABLE_NAME)
 public class UITripEntity {
@@ -28,12 +31,16 @@ public class UITripEntity {
     @ColumnInfo(name = "flights")
     @TypeConverters(DataConverter.class)
     private List<Flight> flights;
+    @ColumnInfo(name = "companies")
+    @TypeConverters(MapConverter.class)
+    private Map<Integer, String> companies;
 
     @ColumnInfo(name = "totalMinPrice")
     private Integer totalMinPrice;
 
     public UITripEntity() {
         flights = new ArrayList<>();
+        companies = new HashMap<>();
     }
 
     public UITripEntity(int entityId, int hotelId, String hotelName, int hotelPrice, List<Flight> flights, Integer totalMinPrice) {
@@ -91,5 +98,13 @@ public class UITripEntity {
 
     public void setTotalMinPrice(Integer totalMinPrice) {
         this.totalMinPrice = totalMinPrice;
+    }
+
+    public Map<Integer, String> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Map<Integer, String> companies) {
+        this.companies = companies;
     }
 }

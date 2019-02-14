@@ -16,5 +16,5 @@ public interface IMainRepository {
 
     Single<UITripEntity> getEntity(UITripEntity item);
 
-    Observable<Boolean> clearCache();
+    Observable<Integer> clearCache();
 }
