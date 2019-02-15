@@ -95,7 +95,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void click(int pos, UITripEntity item) {
+    public void click(final UITripEntity item) {
         mCompositeDisposable.add(
                 mRepository.preparePopupData(item)
                         .filter(list -> list != null && !list.isEmpty())
@@ -136,10 +136,12 @@ public class MainPresenter implements MainContract.Presenter {
         mIsPopupPresents = popupPresents;
     }
 
+    @Override
     public int getLastClickedItemId() {
         return mLastClickedItemId;
     }
 
+    @Override
     public void setLastClickedItemId(int lastClickedItemId) {
         mLastClickedItemId = lastClickedItemId;
     }

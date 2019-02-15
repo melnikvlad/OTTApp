@@ -36,7 +36,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull TripAdapter.ViewHolder holder, int i) {
         int pos = holder.getAdapterPosition();
         holder.bind(pos);
-        holder.card.setOnClickListener(v -> mCallback.onItemClick(pos, mList.get(pos)));
+        holder.card.setOnClickListener(v -> mCallback.onItemClick(mList.get(pos)));
     }
 
     @Override
@@ -76,6 +76,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
     public interface OnHotelClickListener {
-        void onItemClick(int pos, UITripEntity item);
+        void onItemClick(UITripEntity item);
     }
 }

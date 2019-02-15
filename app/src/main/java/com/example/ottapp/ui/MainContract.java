@@ -33,13 +33,17 @@ interface MainContract {
 
         void clearCache();
 
-        void click(int pos, UITripEntity item);
+        void click(UITripEntity item);
+
+        void restorePopup();
 
         void setPopupPresents(boolean cond);
 
         boolean shouldShowPopup();
 
-        void restorePopup();
+        int getLastClickedItemId();
+
+        void setLastClickedItemId(int lastClickedItemId);
 
     }
 }

@@ -3,6 +3,7 @@ package com.example.ottapp.ui;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,9 +29,12 @@ import java.util.List;
 import static android.support.v4.util.Preconditions.checkNotNull;
 
 public class MainFragment extends Fragment implements MainContract.View {
+    public final static String LIST_STATE_KEY = "recycler_list_state";
 
     private MainContract.Presenter mPresenter;
     private TripAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Parcelable mListState;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -48,7 +52,9 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new TripAdapter(getContext(), (pos, item) -> mPresenter.click(pos, item));
+
+        mAdapter = new TripAdapter(getContext(), item -> mPresenter.click(item));
+        mLayoutManager = new LinearLayoutManager(getActivity());
     }
 
     @Nullable
@@ -66,6 +72,21 @@ public class MainFragment extends Fragment implements MainContract.View {
         swipeRefreshLayout.setOnRefreshListener(() -> mPresenter.refresh());
 
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mListState = mLayoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, mListState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+        }
     }
 
     @Override
@@ -117,6 +138,7 @@ public class MainFragment extends Fragment implements MainContract.View {
         showStatusText(false);
         showRefreshProgress(false);
         mAdapter.refresh(list);
+        restoreListState();
     }
 
     @Override
@@ -142,8 +164,13 @@ public class MainFragment extends Fragment implements MainContract.View {
     }
 
     private void init() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
+    }
+
+    private void restoreListState() {
+        if (mListState != null)
+            mLayoutManager.onRestoreInstanceState(mListState);
     }
 
     private void showRefreshProgress(boolean show) {
