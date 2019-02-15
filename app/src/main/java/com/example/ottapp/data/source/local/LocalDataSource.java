@@ -3,7 +3,7 @@ package com.example.ottapp.data.source.local;
 import android.app.Application;
 
 import com.example.ottapp.data.source.local.db.TripDB;
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.data.source.local.model.UITripEntity;
 
 import java.util.List;
 

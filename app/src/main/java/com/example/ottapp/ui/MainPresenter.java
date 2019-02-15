@@ -1,12 +1,17 @@
 package com.example.ottapp.ui;
 
+import com.example.ottapp.data.beans.PopUpItem;
 import com.example.ottapp.data.source.IMainRepository;
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.data.source.local.model.UITripEntity;
+
+import org.reactivestreams.Publisher;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainPresenter implements MainContract.Presenter {
@@ -14,6 +19,9 @@ public class MainPresenter implements MainContract.Presenter {
     private MainContract.View mView;
     private final IMainRepository mRepository;
     private final CompositeDisposable mCompositeDisposable;
+
+    private boolean mIsPopupPresents = false;
+    private int mLastClickedItemId = -1;
 
     MainPresenter(MainContract.View view, IMainRepository repository) {
         if (view != null) {
@@ -29,6 +37,7 @@ public class MainPresenter implements MainContract.Presenter {
     public void subscribe() {
         mView.renderLoadingState();
         readCache();
+        restorePopup();
     }
 
     @Override
@@ -68,6 +77,24 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public void restorePopup() {
+        if (shouldShowPopup()) {
+            mCompositeDisposable.add(
+                    mRepository.getEntity(getLastClickedItemId())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .flatMap(mRepository::preparePopupData)
+                            .subscribe(
+                                    popUpList -> {
+                                        mView.renderPopUpState(new ArrayList<>(popUpList));
+                                        setPopupPresents(true);
+                                    }
+                            )
+            );
+        }
+    }
+
+    @Override
     public void click(int pos, UITripEntity item) {
         mCompositeDisposable.add(
                 mRepository.preparePopupData(item)
@@ -75,7 +102,11 @@ public class MainPresenter implements MainContract.Presenter {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                popUpList -> mView.renderPopUpState(new ArrayList<>(popUpList))
+                                popUpList -> {
+                                    mView.renderPopUpState(new ArrayList<>(popUpList));
+                                    setPopupPresents(true);
+                                    setLastClickedItemId(item.getHotelId());
+                                }
                         )
         );
     }
@@ -93,5 +124,23 @@ public class MainPresenter implements MainContract.Presenter {
                                 }
                         )
         );
+    }
+
+    @Override
+    public boolean shouldShowPopup() {
+        return mIsPopupPresents;
+    }
+
+    @Override
+    public void setPopupPresents(boolean popupPresents) {
+        mIsPopupPresents = popupPresents;
+    }
+
+    public int getLastClickedItemId() {
+        return mLastClickedItemId;
+    }
+
+    public void setLastClickedItemId(int lastClickedItemId) {
+        mLastClickedItemId = lastClickedItemId;
     }
 }

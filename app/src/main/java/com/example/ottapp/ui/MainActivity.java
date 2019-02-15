@@ -5,10 +5,14 @@ import android.os.Bundle;
 
 import com.example.ottapp.R;
 import com.example.ottapp.data.source.MainRepository;
-import com.example.ottapp.data.source.remote.RemoteDataSource;
 import com.example.ottapp.utils.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String POPUP_VISIBILITY_STATE = "is popup shown";
+    private static final String POPUP_ITEM_ID = "item id to restore";
+
+    private MainPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,19 @@ public class MainActivity extends AppCompatActivity {
             ActivityUtils.addFragment(getSupportFragmentManager(), mainFragment, R.id.frameContainer);
         }
 
-        new MainPresenter(mainFragment, MainRepository.getInstance());
+        mPresenter = new MainPresenter(mainFragment, MainRepository.getInstance());
+
+        if (savedInstanceState != null) {
+            mPresenter.setPopupPresents(savedInstanceState.getBoolean(POPUP_VISIBILITY_STATE));
+            mPresenter.setLastClickedItemId(savedInstanceState.getInt(POPUP_ITEM_ID));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(POPUP_VISIBILITY_STATE, mPresenter.shouldShowPopup());
+        outState.putInt(POPUP_ITEM_ID, mPresenter.getLastClickedItemId());
+
+        super.onSaveInstanceState(outState);
     }
 }

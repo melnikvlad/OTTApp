@@ -4,9 +4,10 @@ import com.example.ottapp.App;
 import com.example.ottapp.data.beans.Company;
 import com.example.ottapp.data.beans.Flight;
 import com.example.ottapp.data.beans.HotelUI;
+import com.example.ottapp.data.beans.PopUpItem;
 import com.example.ottapp.data.source.local.ILocalDataSource;
 import com.example.ottapp.data.source.local.LocalDataSource;
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.data.source.local.model.UITripEntity;
 import com.example.ottapp.data.source.remote.IRemoteDataSource;
 import com.example.ottapp.data.source.remote.RemoteDataSource;
 import com.example.ottapp.data.source.remote.model.CompanyList;
@@ -85,6 +86,12 @@ public class MainRepository implements IMainRepository {
     @Override
     public Single<Integer> clearCache() {
         return Single.fromCallable(mLocalDataSource::clear);
+    }
+
+    @Override
+    public Flowable<UITripEntity> getEntity(int id) {
+        return Flowable.fromCallable(() -> mLocalDataSource.get(id))
+                .subscribeOn(Schedulers.newThread());
     }
 
     @Override

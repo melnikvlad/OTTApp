@@ -1,4 +1,4 @@
-package com.example.ottapp.data.source;
+package com.example.ottapp.data.beans;
 
 import android.support.annotation.NonNull;
 

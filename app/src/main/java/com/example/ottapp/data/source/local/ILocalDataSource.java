@@ -1,6 +1,6 @@
 package com.example.ottapp.data.source.local;
 
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.data.source.local.model.UITripEntity;
 
 import java.util.List;
 

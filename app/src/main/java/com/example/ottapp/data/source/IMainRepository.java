@@ -1,6 +1,7 @@
 package com.example.ottapp.data.source;
 
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.data.beans.PopUpItem;
+import com.example.ottapp.data.source.local.model.UITripEntity;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface IMainRepository {
     Single<Integer> clearCache();
 
     Flowable<List<PopUpItem>> preparePopupData(UITripEntity item);
+
+    Flowable<UITripEntity> getEntity(int id);
 
 }

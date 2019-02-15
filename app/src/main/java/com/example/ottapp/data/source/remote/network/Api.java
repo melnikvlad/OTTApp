@@ -1,4 +1,4 @@
-package com.example.ottapp;
+package com.example.ottapp.data.source.remote.network;
 
 import com.example.ottapp.data.source.remote.model.CompanyList;
 import com.example.ottapp.data.source.remote.model.FlightList;

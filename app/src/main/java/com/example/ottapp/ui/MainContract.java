@@ -1,10 +1,9 @@
 package com.example.ottapp.ui;
 
-import com.example.ottapp.BasePresenter;
-import com.example.ottapp.BaseView;
-import com.example.ottapp.data.beans.HotelUI;
-import com.example.ottapp.data.source.PopUpItem;
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.base.BasePresenter;
+import com.example.ottapp.base.BaseView;
+import com.example.ottapp.data.beans.PopUpItem;
+import com.example.ottapp.data.source.local.model.UITripEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,12 @@ interface MainContract {
         void clearCache();
 
         void click(int pos, UITripEntity item);
+
+        void setPopupPresents(boolean cond);
+
+        boolean shouldShowPopup();
+
+        void restorePopup();
 
     }
 }

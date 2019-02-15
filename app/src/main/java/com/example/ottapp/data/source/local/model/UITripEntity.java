@@ -1,4 +1,4 @@
-package com.example.ottapp.data.source.local.db;
+package com.example.ottapp.data.source.local.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -7,6 +7,8 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.example.ottapp.data.beans.Flight;
 import com.example.ottapp.data.source.MainRepository;
+import com.example.ottapp.data.source.local.db.DataConverter;
+import com.example.ottapp.data.source.local.db.MapConverter;
 import com.example.ottapp.utils.Constants;
 
 import java.util.ArrayList;

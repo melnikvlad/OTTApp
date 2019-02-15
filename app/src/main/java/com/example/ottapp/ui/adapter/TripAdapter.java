@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ottapp.R;
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.data.source.local.model.UITripEntity;
 
 import java.util.ArrayList;
 import java.util.List;

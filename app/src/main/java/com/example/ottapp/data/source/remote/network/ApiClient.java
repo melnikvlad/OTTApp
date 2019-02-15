@@ -1,4 +1,4 @@
-package com.example.ottapp;
+package com.example.ottapp.data.source.remote.network;
 
 import com.example.ottapp.utils.Constants;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

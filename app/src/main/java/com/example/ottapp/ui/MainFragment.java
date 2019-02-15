@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ottapp.R;
-import com.example.ottapp.data.source.PopUpItem;
-import com.example.ottapp.data.source.local.db.UITripEntity;
+import com.example.ottapp.data.beans.PopUpItem;
+import com.example.ottapp.data.source.local.model.UITripEntity;
 import com.example.ottapp.ui.adapter.PopUpAdapter;
 import com.example.ottapp.ui.adapter.TripAdapter;
 
@@ -122,14 +122,20 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public void renderPopUpState(final ArrayList<PopUpItem> popUpList) {
         if (getActivity() != null) {
-            final Dialog dialog = new Dialog(getActivity());
-            final ListView listView = dialog.findViewById(R.id.listView);
-            final TextView textApply = dialog.findViewById(R.id.text_apply);
-
-            dialog.setCancelable(true);
-            dialog.setContentView(R.layout.layout_popup);
-            textApply.setOnClickListener(v -> dialog.dismiss());
             PopUpAdapter popupAdapter = new PopUpAdapter(getActivity(), popUpList);
+            Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.layout_popup);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+
+            ListView listView = dialog.findViewById(R.id.listView);
+            TextView textApply = dialog.findViewById(R.id.text_apply);
+
+            textApply.setOnClickListener(v -> {
+                mPresenter.setPopupPresents(false);
+                dialog.dismiss();
+            });
+
             listView.setAdapter(popupAdapter);
             dialog.show();
         }

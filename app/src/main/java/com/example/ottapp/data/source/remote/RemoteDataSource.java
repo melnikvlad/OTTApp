@@ -1,7 +1,7 @@
 package com.example.ottapp.data.source.remote;
 
-import com.example.ottapp.Api;
-import com.example.ottapp.ApiClient;
+import com.example.ottapp.data.source.remote.network.Api;
+import com.example.ottapp.data.source.remote.network.ApiClient;
 import com.example.ottapp.data.source.remote.model.CompanyList;
 import com.example.ottapp.data.source.remote.model.FlightList;
 import com.example.ottapp.data.source.remote.model.HotelList;
