@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ottapp.R;
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private final Context mContext;
     private final OnHotelClickListener mCallback;
-    private List<UITripEntity> mList = new ArrayList<>();
+    private List<UIObject> mList = new ArrayList<>();
 
     public TripAdapter(Context context, OnHotelClickListener callback) {
         mContext = context;
@@ -44,7 +44,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         return mList.size();
     }
 
-    public void refresh(final List<UITripEntity> list) {
+    public void refresh(final List<UIObject> list) {
         if (!mList.isEmpty()) mList.clear();
         mList.addAll(list);
         notifyDataSetChanged();
@@ -65,7 +65,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         }
 
         void bind(int pos) {
-            UITripEntity item = mList.get(pos);
+            UIObject item = mList.get(pos);
 
             if (item != null) {
                 textName.setText(String.format(mContext.getString(R.string.hotel_template), item.getHotelName()));
@@ -76,6 +76,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
     public interface OnHotelClickListener {
-        void onItemClick(UITripEntity item);
+        void onItemClick(UIObject item);
     }
 }

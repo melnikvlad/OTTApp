@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityUtils.addFragment(getSupportFragmentManager(), mainFragment, R.id.frameContainer);
         }
 
-        mPresenter = new MainPresenter(mainFragment, MainRepository.getInstance());
+        mPresenter = new MainPresenter(mainFragment);
 
         if (savedInstanceState != null) {
             mPresenter.setPopupPresents(savedInstanceState.getBoolean(POPUP_VISIBILITY_STATE));

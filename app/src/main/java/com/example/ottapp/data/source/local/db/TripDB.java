@@ -5,10 +5,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 import com.example.ottapp.utils.Constants;
 
-@Database(entities = {UITripEntity.class}, version = 1)
+@Database(entities = {UIObject.class}, version = 1)
 public abstract class TripDB extends RoomDatabase {
 
     private static TripDB sInstance;

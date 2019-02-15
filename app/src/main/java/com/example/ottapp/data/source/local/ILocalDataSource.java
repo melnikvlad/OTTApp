@@ -1,15 +1,15 @@
 package com.example.ottapp.data.source.local;
 
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 
 import java.util.List;
 
 public interface ILocalDataSource {
-    void write(UITripEntity entity);
+    void write(UIObject entity);
 
-    List<UITripEntity> getAll();
+    List<UIObject> getAll();
 
-    UITripEntity get(int hotelId);
+    UIObject get(int hotelId);
 
     Integer clear();
 

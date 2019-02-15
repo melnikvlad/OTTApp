@@ -1,15 +1,12 @@
 package com.example.ottapp.data.source;
 
-import com.example.ottapp.App;
 import com.example.ottapp.data.beans.Company;
 import com.example.ottapp.data.beans.Flight;
-import com.example.ottapp.data.beans.HotelUI;
+import com.example.ottapp.data.beans.Trip;
 import com.example.ottapp.data.beans.PopUpItem;
 import com.example.ottapp.data.source.local.ILocalDataSource;
-import com.example.ottapp.data.source.local.LocalDataSource;
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 import com.example.ottapp.data.source.remote.IRemoteDataSource;
-import com.example.ottapp.data.source.remote.RemoteDataSource;
 import com.example.ottapp.data.source.remote.model.CompanyList;
 import com.example.ottapp.data.source.remote.model.FlightList;
 import com.example.ottapp.data.source.remote.model.HotelList;
@@ -17,33 +14,27 @@ import com.example.ottapp.data.source.remote.model.HotelList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainRepository implements IMainRepository {
+    @Inject
+    IRemoteDataSource mRemoteDataSource;
+    @Inject
+    ILocalDataSource mLocalDataSource;
 
-    private static MainRepository INSTANCE = null;
-    private final IRemoteDataSource mRemoteDataSource;
-    private final ILocalDataSource mLocalDataSource;
-
-    private MainRepository(IRemoteDataSource remoteDataSource, ILocalDataSource localDataSource) {
+    public MainRepository(IRemoteDataSource remoteDataSource, ILocalDataSource localDataSource) {
         mRemoteDataSource = remoteDataSource;
         mLocalDataSource = localDataSource;
     }
 
-    public static MainRepository getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MainRepository(new RemoteDataSource(), new LocalDataSource(App.getApp()));
-        }
-
-        return INSTANCE;
-    }
-
     @Override
-    public Single<List<UITripEntity>> getLocalData() {
+    public Single<List<UIObject>> getLocalData() {
         return Single.create(emitter -> {
-            List<UITripEntity> data = mLocalDataSource.getAll();
+            List<UIObject> data = mLocalDataSource.getAll();
             if (data != null && !data.isEmpty()) {
                 emitter.onSuccess(data);
             } else {
@@ -53,18 +44,18 @@ public class MainRepository implements IMainRepository {
     }
 
     @Override
-    public Flowable<List<UITripEntity>> loadData() {
+    public Flowable<List<UIObject>> loadData() {
         return Flowable.zip(
                 getHotelsObservable().subscribeOn(Schedulers.newThread()),
                 getFlightsObservable().subscribeOn(Schedulers.newThread()),
                 getCompaniesObservable().subscribeOn(Schedulers.newThread()),
-                (hotelList, flightsMap, companiesMap) -> {
+                (trips, flightsMap, companiesMap) -> {
 
-                    for (HotelUI h : hotelList) {
+                    for (Trip trip : trips) {
                         int minPrice = Integer.MAX_VALUE;
-                        UITripEntity entity = createEntity(h);
+                        UIObject entity = createEntity(trip);
 
-                        List<Integer> arr = h.getFlightsIds();
+                        List<Integer> arr = trip.getFlightsIds();
                         for (Integer key : arr) {
                             Flight flight = flightsMap.get(key);
                             if (flight != null) {
@@ -73,7 +64,7 @@ public class MainRepository implements IMainRepository {
                             }
                         }
 
-                        entity.setTotalMinPrice(h.getPrice() + minPrice);
+                        entity.setTotalMinPrice(trip.getPrice() + minPrice);
                         entity.setCompanies(companiesMap);
 
                         mLocalDataSource.write(entity);
@@ -89,37 +80,37 @@ public class MainRepository implements IMainRepository {
     }
 
     @Override
-    public Flowable<UITripEntity> getEntity(int id) {
+    public Flowable<UIObject> getEntity(int id) {
         return Flowable.fromCallable(() -> mLocalDataSource.get(id))
                 .subscribeOn(Schedulers.newThread());
     }
 
     @Override
-    public Flowable<List<PopUpItem>> preparePopupData(UITripEntity entity) {
+    public Flowable<List<PopUpItem>> preparePopupData(UIObject entity) {
         Map<Integer, String> companies = entity.getCompanies();
         int hotelPrice = entity.getHotelPrice();
 
         return Flowable.just(entity)
-                .map(UITripEntity::getFlights)
+                .map(UIObject::getFlights)
                 .flatMapIterable(source -> source)
                 .map(flight -> new PopUpItem(companies.get(flight.getCompanyId()), hotelPrice + flight.getPrice()))
                 .toSortedList()
                 .toFlowable();
     }
 
-    private Flowable<List<HotelUI>> getHotelsObservable() {
+    private Flowable<List<Trip>> getHotelsObservable() {
         return mRemoteDataSource
                 .fetchHotels()
                 .map(HotelList::getHotels)
                 .flatMapIterable(source -> source)
                 .map(hotel -> {
-                    HotelUI hotelUI = new HotelUI();
-                    hotelUI.setId(hotel.getId());
-                    hotelUI.setName(hotel.getName());
-                    hotelUI.setPrice(hotel.getPrice());
-                    hotelUI.setFlightsIds(hotel.getFlights());
+                    Trip trip = new Trip();
+                    trip.setId(hotel.getId());
+                    trip.setName(hotel.getName());
+                    trip.setPrice(hotel.getPrice());
+                    trip.setFlightsIds(hotel.getFlights());
 
-                    return hotelUI;
+                    return trip;
                 })
                 .toList()
                 .toFlowable();
@@ -143,11 +134,11 @@ public class MainRepository implements IMainRepository {
                 .toFlowable();
     }
 
-    private UITripEntity createEntity(final HotelUI hotel) {
-        UITripEntity entity = new UITripEntity();
-        entity.setHotelId(hotel.getId());
-        entity.setHotelName(hotel.getName());
-        entity.setHotelPrice(hotel.getPrice());
+    private UIObject createEntity(final Trip trip) {
+        UIObject entity = new UIObject();
+        entity.setHotelId(trip.getId());
+        entity.setHotelName(trip.getName());
+        entity.setHotelPrice(trip.getPrice());
 
         return entity;
     }

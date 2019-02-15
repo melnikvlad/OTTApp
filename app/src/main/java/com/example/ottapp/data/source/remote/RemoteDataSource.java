@@ -6,14 +6,20 @@ import com.example.ottapp.data.source.remote.model.CompanyList;
 import com.example.ottapp.data.source.remote.model.FlightList;
 import com.example.ottapp.data.source.remote.model.HotelList;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 
 public class RemoteDataSource implements IRemoteDataSource {
 
-    private Api mService;
+    @Inject
+    Api mService;
+    @Inject
+    ApiClient mClient;
 
-    public RemoteDataSource() {
-        mService = ApiClient.getInstance().api();
+    public RemoteDataSource(Api service, ApiClient client) {
+        mService = service;
+        mClient = client;
     }
 
     @Override

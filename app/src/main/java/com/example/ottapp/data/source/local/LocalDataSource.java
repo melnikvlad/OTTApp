@@ -3,7 +3,7 @@ package com.example.ottapp.data.source.local;
 import android.app.Application;
 
 import com.example.ottapp.data.source.local.db.TripDB;
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 
 import java.util.List;
 
@@ -16,17 +16,17 @@ public class LocalDataSource implements ILocalDataSource {
     }
 
     @Override
-    public void write(final UITripEntity entity) {
+    public void write(final UIObject entity) {
         sDB.getDao().insert(entity);
     }
 
     @Override
-    public List<UITripEntity> getAll() {
+    public List<UIObject> getAll() {
         return sDB.getDao().getAll();
     }
 
     @Override
-    public UITripEntity get(int hotelId) {
+    public UIObject get(int hotelId) {
         return sDB.getDao().get(hotelId);
     }
 

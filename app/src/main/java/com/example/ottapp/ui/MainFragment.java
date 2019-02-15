@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.example.ottapp.R;
 import com.example.ottapp.data.beans.PopUpItem;
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 import com.example.ottapp.ui.adapter.PopUpAdapter;
 import com.example.ottapp.ui.adapter.TripAdapter;
 
@@ -132,7 +132,7 @@ public class MainFragment extends Fragment implements MainContract.View {
     }
 
     @Override
-    public void renderDataState(final List<UITripEntity> list) {
+    public void renderDataState(final List<UIObject> list) {
         showList(true);
         showProgress(false);
         showStatusText(false);

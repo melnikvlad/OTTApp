@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity(tableName = Constants.TABLE_NAME)
-public class UITripEntity {
+public class UIObject {
     @PrimaryKey(autoGenerate = true)
     private int entityId;
 
@@ -40,12 +40,12 @@ public class UITripEntity {
     @ColumnInfo(name = "totalMinPrice")
     private Integer totalMinPrice;
 
-    public UITripEntity() {
+    public UIObject() {
         flights = new ArrayList<>();
         companies = new HashMap<>();
     }
 
-    public UITripEntity(int entityId, int hotelId, String hotelName, int hotelPrice, List<Flight> flights, Integer totalMinPrice) {
+    public UIObject(int entityId, int hotelId, String hotelName, int hotelPrice, List<Flight> flights, Integer totalMinPrice) {
         this.entityId = entityId;
         this.hotelId = hotelId;
         this.hotelName = hotelName;

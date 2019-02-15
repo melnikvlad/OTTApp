@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HotelUI {
+public class Trip {
     private int id;
     private String name;
     private int price;
@@ -20,11 +20,11 @@ public class HotelUI {
     private List<Flight> flights = new ArrayList<>();
     private Integer totalMinPrice = -1;
 
-    public HotelUI() {
+    public Trip() {
 
     }
 
-    public HotelUI(int id, String name, int price, List<Integer> flightsIds, Integer totalMinPrice) {
+    public Trip(int id, String name, int price, List<Integer> flightsIds, Integer totalMinPrice) {
         this.id = id;
         this.name = name;
         this.price = price;

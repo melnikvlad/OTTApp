@@ -1,36 +1,35 @@
 package com.example.ottapp.ui;
 
-import com.example.ottapp.data.beans.PopUpItem;
-import com.example.ottapp.data.source.IMainRepository;
-import com.example.ottapp.data.source.local.model.UITripEntity;
-
-import org.reactivestreams.Publisher;
+import com.example.ottapp.App;
+import com.example.ottapp.data.source.MainRepository;
+import com.example.ottapp.data.source.local.model.UIObject;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainPresenter implements MainContract.Presenter {
 
+    @Inject
+    MainRepository mRepository;
+    @Inject
+    CompositeDisposable mCompositeDisposable;
     private MainContract.View mView;
-    private final IMainRepository mRepository;
-    private final CompositeDisposable mCompositeDisposable;
 
     private boolean mIsPopupPresents = false;
     private int mLastClickedItemId = -1;
 
-    MainPresenter(MainContract.View view, IMainRepository repository) {
+    MainPresenter(MainContract.View view) {
         if (view != null) {
             mView = view;
             mView.setPresenter(this);
-        }
 
-        mCompositeDisposable = new CompositeDisposable();
-        mRepository = repository;
+            App.getApp().getAppComponent().inject(this);
+        }
     }
 
     @Override
@@ -95,7 +94,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void click(final UITripEntity item) {
+    public void click(final UIObject item) {
         mCompositeDisposable.add(
                 mRepository.preparePopupData(item)
                         .filter(list -> list != null && !list.isEmpty())

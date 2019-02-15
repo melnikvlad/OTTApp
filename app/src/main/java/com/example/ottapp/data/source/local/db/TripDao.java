@@ -5,7 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 import com.example.ottapp.utils.Constants;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
 public interface TripDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(UITripEntity entity);
+    void insert(UIObject entity);
 
     @Query("SELECT * FROM " + Constants.TABLE_NAME)
-    List<UITripEntity> getAll();
+    List<UIObject> getAll();
 
     @Query("SELECT * FROM " + Constants.TABLE_NAME + " WHERE hotelId = :id")
-    UITripEntity get(int id);
+    UIObject get(int id);
 
     @Query("DELETE FROM " + Constants.TABLE_NAME)
     int clear();

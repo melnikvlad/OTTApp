@@ -7,18 +7,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static ApiClient INSTANCE = null;
     private static Retrofit retrofit = null;
 
-    private ApiClient() {
-    }
-
-    public static ApiClient getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ApiClient();
-        }
-
-        return INSTANCE;
+    public ApiClient() {
     }
 
     public Api api() {

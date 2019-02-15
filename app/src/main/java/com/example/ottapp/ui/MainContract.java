@@ -3,7 +3,7 @@ package com.example.ottapp.ui;
 import com.example.ottapp.base.BasePresenter;
 import com.example.ottapp.base.BaseView;
 import com.example.ottapp.data.beans.PopUpItem;
-import com.example.ottapp.data.source.local.model.UITripEntity;
+import com.example.ottapp.data.source.local.model.UIObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ interface MainContract {
 
         void renderRefreshingState();
 
-        void renderDataState(List<UITripEntity> list);
+        void renderDataState(List<UIObject> list);
 
         void renderPopUpState(ArrayList<PopUpItem> popUpList);
 
@@ -33,7 +33,7 @@ interface MainContract {
 
         void clearCache();
 
-        void click(UITripEntity item);
+        void click(UIObject item);
 
         void restorePopup();
 
